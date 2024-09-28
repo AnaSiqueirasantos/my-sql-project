@@ -1,0 +1,35 @@
+-- Questão 1: Valor total de cada compra
+SELECT 
+    C.ID_Compra,
+    P.Nome_Produto,
+    C.Quantidade,
+    (C.Quantidade * P.Preco_Unitario) AS Valor_Total
+FROM 
+    Compras C
+JOIN 
+    Produtos P ON C.ID_Produto = P.ID_Produto;
+
+-- Questão 2: Produto mais vendido
+SELECT 
+    P.Nome_Produto,
+    SUM(C.Quantidade) AS Total_Vendido
+FROM 
+    Compras C
+JOIN 
+    Produtos P ON C.ID_Produto = P.ID_Produto
+GROUP BY 
+    P.Nome_Produto
+ORDER BY 
+    Total_Vendido DESC
+FETCH FIRST 1 ROW ONLY;  -- Para Oracle 12c e superior
+
+-- Questão 3: Produtos e número de vezes que foram comprados
+SELECT 
+    P.Nome_Produto,
+    COUNT(C.ID_Compra) AS Numero_Vezes_Comprado
+FROM 
+    Produtos P
+LEFT JOIN 
+    Compras C ON P.ID_Produto = C.ID_Produto
+GROUP BY 
+    P.Nome_Produto;
